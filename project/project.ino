@@ -22,8 +22,7 @@
 #define MODE_LINE_FOLLOWER 7
 #define MODE_LANE_MAINTAIN 8
 
-const int CurrentMode = MODE_LINE_FOLLOWER;	// 0 - Line follower
-						// 1 - Lane maintainer
+const int CurrentMode = MODE_LANE_MAINTAIN;
 
 // Pins connected to the Motor 1a, 1b, 2a, 2b pins on the l293D motor controller
 const int LEFT_MOTOR_1A_OUT = 3;
@@ -100,20 +99,28 @@ void loop() {
 	}
     } else if ( CurrentMode == MODE_LANE_MAINTAIN ) {
 	if (left_ir_val == NOT_REFLECTED) {
-	    analogWrite(LEFT_MOTOR_1B_OUT, 150);
+	    analogWrite(LEFT_MOTOR_1B_OUT, 170);
 	    analogWrite(RIGHT_MOTOR_2B_OUT, 0);
+
+	    while(left_ir_val == NOT_REFLECTED && right_ir_val== REFLECTED) {
+	    	left_ir_val = analogRead(LEFT_IR_IN);
+	    	right_ir_val = analogRead(RIGHT_IR_IN);
+	    }
+
 	    return;
 	}
 
 	if (right_ir_val == NOT_REFLECTED) {
-	    // black line on right, turn right
-	    //analogWrite(RIGHT_MOTOR_2A_OUT, 0);
-	    analogWrite(RIGHT_MOTOR_2B_OUT, 150);
-
+	    analogWrite(RIGHT_MOTOR_2B_OUT, 170);
 	    analogWrite(LEFT_MOTOR_1B_OUT, 0);
+
+	    while(right_ir_val == NOT_REFLECTED && left_ir_val== REFLECTED) {
+	    	left_ir_val = analogRead(LEFT_IR_IN);
+	    	right_ir_val = analogRead(RIGHT_IR_IN);
+	    }
+
 	    return;
 	}
-
     }
 
     Serial.println("Driving both");
