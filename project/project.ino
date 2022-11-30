@@ -22,7 +22,7 @@
 #define MODE_LINE_FOLLOWER 7
 #define MODE_LANE_MAINTAIN 8
 
-const int CurrentMode = MODE_LANE_MAINTAIN;
+const int CurrentMode = MODE_LINE_FOLLOWER;
 
 // Pins connected to the Motor 1a, 1b, 2a, 2b pins on the l293D motor controller
 const int LEFT_MOTOR_1A_OUT = 3;
